@@ -1,6 +1,9 @@
-import {Component,useState,useEffect,useCallback} from 'react';
+import {/* Component, */useState,useEffect,useCallback,useMemo} from 'react';
 import {Container} from 'react-bootstrap';
 import './App.css';
+
+
+
 
 // class Slider extends Component {
 
@@ -57,7 +60,10 @@ import './App.css';
 
 
 
-
+const countTotal = (num) => {
+    console.log("counting...")
+    return num+10;
+}
 
 const Slider = (props) => {
 
@@ -69,9 +75,9 @@ const Slider = (props) => {
         console.log("fetching")
     
         return[
-            "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg",
-            "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg",
-            "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg" 
+            "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg"
+            /* "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg",
+            "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg"  */
         ]
     },[])
 
@@ -90,22 +96,30 @@ const Slider = (props) => {
         setAutoplay(autoplay => !autoplay);
     }
 
+    const total = useMemo(() => {
+
+        return countTotal(slide);
+    },[slide]);
+    
+    
+    const style = useMemo(() => ({
+        color: slide > 4 ? "red" : "black"
+    }),[slide])
+
+
+    useEffect(() => {
+        console.log("styles!")
+    },[style]);
+
     return (
         <Container>
             <div className="slider w-50 m-auto">
-                <img className="d-block w-100" src="https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg" alt="slide" />
                 
-                {/* {
-                    getSomeImages().map((url,i) => {
-                        return (
-                            <img key = {i} className="d-block w-100" src={url} alt="slide" />
-                        )
-                    })
-                } */}
 
                 <Slide getSomeImages={getSomeImages}/>
 
                 <div className="text-center mt-5">Active slide {slide} <br/>{autoplay ? "auto" : null} </div>
+                <div className="text-center mt-1" style={style}>Total slides {total}</div>
                 {<div className="buttons mt-3">
                     <button 
                         className="btn btn-primary me-2"
